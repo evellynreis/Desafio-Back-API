@@ -6,6 +6,7 @@ A API permite gerenciar slugs e usuários, possibilitando criar novos slugs e as
 - Endpoint listando todos emblemas registrados
 - Endpoint para resgatar um emblema pelo slug garantindo que o mesmo emblema não seja resgatado duas vezes pelo mesmo usuário.
 - Lista todos os emblemas já resgatados por um usuário específico.
+- Adiciona a capacidade de filtrar os emblemas pelo nome no endpoint de listagem de emblemas.
 
 # Pré-requisitos
 Antes de iniciar, certifique-se de ter o Docker instalado em sua máquina.
