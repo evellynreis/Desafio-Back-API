@@ -44,6 +44,10 @@ server.get("/slug/:id", async (req, res) => {
   const { id } = req.params;
   const user_id = Number(id);
 
+  if (isNaN(user_id)) {
+    return res.status(400).json({ message: "ID de usuário inválido" });
+  }
+
   try {
     const slugsById = await db("slugs_per_user as su")
       .innerJoin("slug as s", function () {
