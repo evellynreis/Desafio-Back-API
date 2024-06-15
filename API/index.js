@@ -50,9 +50,7 @@ server.get("/slug/:id", async (req, res) => {
 
   try {
     const slugsById = await db("slugs_per_user as su")
-      .innerJoin("slug as s", function () {
-        this.on("s.id", "=", "su.slug_id");
-      })
+      .innerJoin("slug as s", "s.id", "=", "su.slug_id")
       .select("s.slug", "s.name", "s.image")
       .where("su.user_id", user_id);
 
