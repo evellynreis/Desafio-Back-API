@@ -4,12 +4,20 @@ const { db } = require("./src/data/db/db");
 
 server.use(express.json());
 
-server.get("/todos", async (_req, res) => {
+server.get("/todos", async (req, res) => {
+  const { name } = req.query;
   try {
-    const slugs = await db("slug").select("*");
-    return res.status(200).send(slugs);
+    let query = db("slug").select("*");
+
+    if (name) {
+      query = query.where("name", "like", `%${name}%`);
+    }
+
+    const slugs = await query;
+    return res.status(200).json(slugs);
   } catch (error) {
-    return res.status(500).send({ message: "Erro ao procurar no banco" });
+    console.error("Erro ao procurar no banco:", error);
+    return res.status(500).json({ message: "Erro ao procurar no banco" });
   }
 });
 
@@ -26,7 +34,7 @@ server.post("/slug", async (req, res) => {
       .first();
 
     if (userAlreadyRescueSlug) {
-      throw new Error("Usuario já resgatou esse emblema");
+      return res.status(409).send({ message: "Usuario já resgatou esse emblema" });
     }
 
     await database.insert({
@@ -68,5 +76,5 @@ server.get("/slug/:id", async (req, res) => {
 const PORT = 3000;
 
 server.listen(PORT, () => {
-  console.log(`Servidor está funcionando na porta ${PORT} ...`);
+  console.log(`Servidor está funcionando na porta ${PORT}...`);
 });
